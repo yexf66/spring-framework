@@ -202,7 +202,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 
 	private final ResourceLoader resourceLoader;
-
+    //创建 ant方式的路径匹配器 ，struts里面有，现在已经不用了
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
 
