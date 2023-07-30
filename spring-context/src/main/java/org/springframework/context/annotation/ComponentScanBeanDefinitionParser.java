@@ -45,6 +45,8 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ * 注解扫描 component-scan 标签的BeanDefinitionParser
  * Parser for the {@code <context:component-scan/>} element.
  *
  * @author Mark Fisher
@@ -80,14 +82,14 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
-		String basePackage = element.getAttribute(BASE_PACKAGE_ATTRIBUTE);
+		String basePackage = element.getAttribute(BASE_PACKAGE_ATTRIBUTE);//注解扫描的起始包
 		basePackage = parserContext.getReaderContext().getEnvironment().resolvePlaceholders(basePackage);
 		String[] basePackages = StringUtils.tokenizeToStringArray(basePackage,
 				ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 
 		// Actually scan for bean definitions and register them.
 		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
-		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);
+		Set<BeanDefinitionHolder> beanDefinitions = scanner.doScan(basePackages);//开始扫描给定包下注解类型是Component的Bean
 		registerComponents(parserContext.getReaderContext(), beanDefinitions, element);
 
 		return null;

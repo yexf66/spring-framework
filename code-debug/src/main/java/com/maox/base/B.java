@@ -1,4 +1,6 @@
-package com.maox;
+package com.maox.base;
+
+import com.maox.base.A;
 
 public class B {
 

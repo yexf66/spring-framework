@@ -1,7 +1,6 @@
 package com.maox.bfpptest;
 
-import com.maox.A;
-import org.junit.Test;
+import com.maox.base.A;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

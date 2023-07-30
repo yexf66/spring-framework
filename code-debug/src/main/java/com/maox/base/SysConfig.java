@@ -1,4 +1,4 @@
-package com.maox;
+package com.maox.base;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

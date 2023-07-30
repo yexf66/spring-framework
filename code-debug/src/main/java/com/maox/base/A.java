@@ -1,4 +1,4 @@
-package com.maox;
+package com.maox.base;
 
 public class A {
 
