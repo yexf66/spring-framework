@@ -1,8 +1,15 @@
 package com.maox.base;
 
+import javax.annotation.PostConstruct;
+
 public class Person {
 	private Integer age;
 	private String name;
+
+	@PostConstruct
+	public void init() {
+		System.out.println("Person#init() is invoked");
+	}
 
 	public Integer getAge() {
 		return age;

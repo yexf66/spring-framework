@@ -11,4 +11,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 		<property name="name" value="zhangsan"/>
 		<property name="age" value="18"/>
 	</bean>
+
+	<bean id="myFactoryBean" class="com.maox.base.MyFactoryBean"/>
 </beans>
