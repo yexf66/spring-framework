@@ -1,4 +1,4 @@
-package com.maox.base;
+package com.maox.factoryBean;
 
 public class Student {
 	private String name;

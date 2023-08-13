@@ -1,4 +1,4 @@
-package com.maox.base;
+package com.maox.factoryBean;
 
 import org.springframework.beans.factory.FactoryBean;
 

@@ -1,14 +1,12 @@
-package com.maox.bfpptest;
+package com.maox.factoryBean;
 
-import com.maox.base.Cat;
-import com.maox.base.Student;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TestAnnotationScan {
+public class TestFactoryBean {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("annotationApplicationContext.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("factoryBeanApplicationContext.xml");
 		Cat cat = applicationContext.getBean(Cat.class);
 		System.out.println(cat);
 		Student student = (Student) applicationContext.getBean("myFactoryBean");

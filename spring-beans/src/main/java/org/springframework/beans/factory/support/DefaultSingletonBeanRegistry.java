@@ -166,8 +166,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
 			if (!this.singletonObjects.containsKey(beanName)) {
+				//放到三次缓存中
 				this.singletonFactories.put(beanName, singletonFactory);
+				//从二级缓存移除
 				this.earlySingletonObjects.remove(beanName);
+				//添加到已注册
 				this.registeredSingletons.add(beanName);
 			}
 		}
@@ -461,8 +464,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		String canonicalName = canonicalName(beanName);
 
 		synchronized (this.dependentBeanMap) {
+			// 从containedBeanMap中获取containgBeanNamed的内部Bean名列表，没有时创建一个初始化长度为8的LinkedHashSet来使用
 			Set<String> dependentBeans =
 					this.dependentBeanMap.computeIfAbsent(canonicalName, k -> new LinkedHashSet<>(8));
+			// 将containedBeanName添加到containedBeans中，如果已经添加过了，就直接返回
 			if (!dependentBeans.add(dependentBeanName)) {
 				return;
 			}

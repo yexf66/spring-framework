@@ -14,6 +14,8 @@ dependencies {
     compile(project(":spring-beans"))
     compile(project(":spring-core"))
     compile(project(":spring-context"))
+    compile("org.aspectj:aspectjweaver:1.9.6")
+    compile(project(":spring-aop"))
     testCompile(testFixtures(project(":spring-beans")))
     testCompile(testFixtures(project(":spring-core")))
 }
