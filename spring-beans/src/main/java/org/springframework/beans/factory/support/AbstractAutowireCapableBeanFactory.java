@@ -2252,7 +2252,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					(mbd != null ? mbd.getResourceDescription() : null),
 					beanName, "Invocation of init method failed", ex);
 		}
-		//如果mbd为null || mbd不是"synthetic"
+		//如果mbd为null || mbd不是"synthetic".一般只有AOP相关的pointCut配置或者Advice配置才会将synthetic设置为true
 		if (mbd == null || !mbd.isSynthetic()) {
 			// 将BeanPostProcessors应用到给定的现有Bean实例，调用它们的postProcessAfterInitialization方法。
 			// 返回的Bean实例可能是原始Bean包装器
