@@ -107,18 +107,18 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 		for (Class<?> ifc : targetInterfaces) {
 			if (!isConfigurationCallbackInterface(ifc) && !isInternalLanguageInterface(ifc) &&
 					ifc.getMethods().length > 0) {
-				hasReasonableProxyInterface = true;
+				hasReasonableProxyInterface = true;//用接口代理，也就是jdk
 				break;
 			}
 		}
-		if (hasReasonableProxyInterface) {
+		if (hasReasonableProxyInterface) {//有接口
 			// Must allow for introductions; can't just set interfaces to the target's interfaces only.
 			for (Class<?> ifc : targetInterfaces) {
 				proxyFactory.addInterface(ifc);
 			}
 		}
 		else {
-			proxyFactory.setProxyTargetClass(true);
+			proxyFactory.setProxyTargetClass(true);//没接口就设置true
 		}
 	}
 
