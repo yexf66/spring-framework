@@ -1,15 +1,14 @@
-package com.maox.base.config;
+package com.maox.base.componetScan;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @PropertySource("classpath:test.properties")
-public class MyPropertySource {
+public class LuoMuWei {
 	@Value("${name}")
 	private String name;
-
 	public String getName() {
 		return name;
 	}

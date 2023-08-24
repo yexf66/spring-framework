@@ -3,7 +3,7 @@ package com.maox.base.cycle;
 
 public class A  {
 
-    private String name;
+//    private String name;
     private B b;
 
     public B getB() {
@@ -13,14 +13,14 @@ public class A  {
     public void setB(B b) {
         this.b = b;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public String toString() {

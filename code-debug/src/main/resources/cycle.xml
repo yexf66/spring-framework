@@ -5,7 +5,7 @@
 
 <!--    <bean class="com.mashibing.MyBeanFactoryPostProcessorBySelf"></bean>-->
     <bean id="a" class="com.maox.base.cycle.A" >
-        <property name="name" value="zhangsan"/>
+<!--        <property name="name" value="zhangsan"/>-->
         <property name="b" ref="b"/>
     </bean>
     <bean id="b" class="com.maox.base.cycle.B">

@@ -1,4 +1,4 @@
-package com.maox.base.config;
+package com.maox.base.componetScan;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
