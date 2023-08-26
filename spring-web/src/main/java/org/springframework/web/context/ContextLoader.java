@@ -276,6 +276,7 @@ public class ContextLoader {
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
 			if (this.context == null) {
+				//初始化context,第一次执行的时候获取到一个root webApplicationContext
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
@@ -289,7 +290,7 @@ public class ContextLoader {
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
-					configureAndRefreshWebApplicationContext(cwac, servletContext);
+					configureAndRefreshWebApplicationContext(cwac, servletContext);//创建spring容器
 				}
 			}
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
@@ -329,7 +330,9 @@ public class ContextLoader {
 	 * @see ConfigurableWebApplicationContext
 	 */
 	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+		//获取contextClass的class 对象
 		Class<?> contextClass = determineContextClass(sc);
+		//如果是自定义的contextClass对象，必须实现 ConfigurableWebApplicationContext
 		if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
 			throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
 					"] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
@@ -385,7 +388,7 @@ public class ContextLoader {
 
 		wac.setServletContext(sc);
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
-		if (configLocationParam != null) {
+		if (configLocationParam != null) {//往 webApplicationContext中设置web.xml中的 spring配置contextConfigLocation
 			wac.setConfigLocation(configLocationParam);
 		}
 

@@ -41,6 +41,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * AbstractApplicationEventMulticaster是ApplicationEventMulticaster接口的抽象实现，提供基本的监听器注册工具方法（注册和移除监听器）
+ * 默认情况下不允许同一个监听器有多个实例，因为该类会将监听器保存在ListenerRetriever集合类的set集合中
  * Abstract implementation of the {@link ApplicationEventMulticaster} interface,
  * providing the basic listener registration facility.
  *
@@ -63,8 +65,10 @@ import org.springframework.util.ObjectUtils;
 public abstract class AbstractApplicationEventMulticaster
 		implements ApplicationEventMulticaster, BeanClassLoaderAware, BeanFactoryAware {
 
+	// 创建监听器助手类，用于存放应用程序的监听器集合
 	private final DefaultListenerRetriever defaultRetriever = new DefaultListenerRetriever();
 
+	//ListenerCacheKey是基于事件类型和源类型的类作为key用来存储监听器助手defaultRetriever
 	final Map<ListenerCacheKey, CachedListenerRetriever> retrieverCache = new ConcurrentHashMap<>(64);
 
 	@Nullable
@@ -99,16 +103,25 @@ public abstract class AbstractApplicationEventMulticaster
 	}
 
 
+	/**
+	 * 添加应用程序监听器类
+	 * @param listener the listener to add
+	 */
 	@Override
 	public void addApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.defaultRetriever) {
 			// Explicitly remove target for a proxy, if registered already,
 			// in order to avoid double invocations of the same listener.
+			// 显示删除代理的目标(如果已经注册)，以避免对同一个监听器的两次调用获取listener背后的singleton目标对象
 			Object singletonTarget = AopProxyUtils.getSingletonTarget(listener);
+			//如果singletonTarget是ApplicationListener实例
 			if (singletonTarget instanceof ApplicationListener) {
+				//将singletonTarget从defaultRetriever.applicationListeners中移除
 				this.defaultRetriever.applicationListeners.remove(singletonTarget);
 			}
+			//将listener添加到defaultRetriever.applicationListeners中
 			this.defaultRetriever.applicationListeners.add(listener);
+			//清空缓存，因为listener可能支持缓存的某些事件类型和源类型，所以要刷新缓存
 			this.retrieverCache.clear();
 		}
 	}
@@ -116,7 +129,9 @@ public abstract class AbstractApplicationEventMulticaster
 	@Override
 	public void addApplicationListenerBean(String listenerBeanName) {
 		synchronized (this.defaultRetriever) {
+			// 将listenerBeanName添加到defaultRetriever的applicationListenerBeans
 			this.defaultRetriever.applicationListenerBeans.add(listenerBeanName);
+			// 清空缓存，因为listener可能支持缓存的某些事件类型和源类型，所以要刷新缓存
 			this.retrieverCache.clear();
 		}
 	}
@@ -124,7 +139,9 @@ public abstract class AbstractApplicationEventMulticaster
 	@Override
 	public void removeApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.defaultRetriever) {
+			//将listener从retriever的ApplicationListener对象集合中移除
 			this.defaultRetriever.applicationListeners.remove(listener);
+			//清空缓存，因为listener可能支持缓存的某些事件类型和源类型，所以要刷新缓存
 			this.retrieverCache.clear();
 		}
 	}
@@ -170,7 +187,10 @@ public abstract class AbstractApplicationEventMulticaster
 	protected Collection<ApplicationListener<?>> getApplicationListeners(
 			ApplicationEvent event, ResolvableType eventType) {
 
+		//event.getSource:事件最初在其上发生的对象。
+		//获取event最初在其上发生的对象
 		Object source = event.getSource();
+		//如果source不为nul就获取source的Class对象；否则引用null
 		Class<?> sourceType = (source != null ? source.getClass() : null);
 		ListenerCacheKey cacheKey = new ListenerCacheKey(eventType, sourceType);
 
@@ -178,6 +198,7 @@ public abstract class AbstractApplicationEventMulticaster
 		CachedListenerRetriever newRetriever = null;
 
 		// Quick check for existing entry on ConcurrentHashMap
+		// 在ConcurrentHashMap上快速检查现有条目,从retrieverCache中获取cacheKey对应的ListenerRetriever对象
 		CachedListenerRetriever existingRetriever = this.retrieverCache.get(cacheKey);
 		if (existingRetriever == null) {
 			// Caching a new ListenerRetriever if possible
